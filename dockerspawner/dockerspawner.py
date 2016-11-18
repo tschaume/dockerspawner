@@ -15,6 +15,7 @@ from tornado import gen
 
 from escapism import escape
 from jupyterhub.spawner import Spawner
+from jupyterhub.orm import Server
 from traitlets import (
     Dict,
     Unicode,
@@ -416,6 +417,14 @@ class DockerSpawner(Spawner):
         # store on user for pre-jupyterhub-0.7:
         self.user.server.ip = ip
         self.user.server.port = port
+
+        # store flask_service ip and port on user
+        resp = yield self.docker('inspect_container', self.container_id)
+        flask_service = resp['NetworkSettings']['Ports']['5000/tcp'][0]
+        self.user.flask_server = Server()
+        self.user.flask_server.ip = flask_service['HostIp']
+        self.user.flask_server.port = flask_service['HostPort']
+
         # jupyterhub 0.7 prefers returning ip, port:
         return (ip, port)
     
