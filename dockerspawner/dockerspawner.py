@@ -424,6 +424,10 @@ class DockerSpawner(Spawner):
         self.user.flask_server = Server()
         self.user.flask_server.ip = flask_service['HostIp']
         self.user.flask_server.port = flask_service['HostPort']
+        fw_service = resp['NetworkSettings']['Ports']['5001/tcp'][0]
+        self.user.fw_server = Server()
+        self.user.fw_server.ip = fw_service['HostIp']
+        self.user.fw_server.port = fw_service['HostPort']
 
         # jupyterhub 0.7 prefers returning ip, port:
         return (ip, port)
