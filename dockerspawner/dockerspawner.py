@@ -267,7 +267,8 @@ class DockerSpawner(Spawner):
             JPY_USER=self.user.name,
             JPY_COOKIE_NAME=self.user.server.cookie_name,
             JPY_BASE_URL=self.user.server.base_url,
-            JPY_HUB_PREFIX=self.hub.server.base_url
+            JPY_HUB_PREFIX=self.hub.server.base_url,
+            PMG_MAPI_KEY=self.user.api_key
         ))
 
         if self.notebook_dir:
